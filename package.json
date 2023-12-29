@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "watch": "NODE_ENV=dev vite build --watch",
+    "watch": "vite build --watch",
     "build": "vite build",
-    "analyze": "vite build --mode staging",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test:ui": "vitest --ui --environment jsdom",

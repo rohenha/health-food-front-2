@@ -6,6 +6,7 @@ import brotli from 'rollup-plugin-brotli'
 import { visualizer } from 'rollup-plugin-visualizer'
 import react from '@vitejs/plugin-react'
 
+// Global
 const srcFolder = dirname(__filename) + '/src'
 
 export default defineConfig({

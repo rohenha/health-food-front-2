@@ -1,32 +1,23 @@
 import { defineConfig } from 'vite'
-import { fileURLToPath } from 'url'
-import path, { dirname } from 'path'
-import getPlugins from './vite.plugins'
+import { dirname } from 'path'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const folder = path.resolve(__dirname, 'src')
+// Plugins
+import brotli from 'rollup-plugin-brotli'
+import { visualizer } from 'rollup-plugin-visualizer'
+import react from '@vitejs/plugin-react'
 
-const env = process.env.NODE_ENV
-
-const config = {
-  env: {
-    isDev: env === 'dev',
-    isProd: env === 'prod' || env === 'analyze',
-    isAnalyze: env === 'analyze',
-  },
-}
+const srcFolder = dirname(__filename) + '/src'
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@styles/': `${folder}/styles/`,
-      '@components/': `${folder}/components/`,
-      '@store/': `${folder}/store/`,
-      '@pages/': `${folder}/pages/`,
-      '@libs/': `${folder}/libs/`,
-      '@hooks/': `${folder}/hooks/`,
-      '@contexts/': `${folder}/contexts/`,
+      '@components/': `${srcFolder}/components/`,
+      '@contexts/': `${srcFolder}/contexts/`,
+      '@hooks/': `${srcFolder}/hooks/`,
+      '@libs/': `${srcFolder}/libs/`,
+      '@pages/': `${srcFolder}/pages/`,
+      '@store/': `${srcFolder}/store/`,
+      '@styles/': `${srcFolder}/styles/`,
     },
   },
   css: {
@@ -41,18 +32,27 @@ export default defineConfig({
     stringify: true,
   },
   build: {
-    sourcemap: config.env.isProd ? false : 'inline',
-    minify: config.env.isProd ? 'esbuild' : false,
+    sourcemap: false,
+    minify: true,
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-router-dom', 'react-dom'],
+          // vendor: ['react', 'react-dom'],
           // ...renderChunks(dependencies),
         },
       },
     },
   },
-  plugins: getPlugins(config.env),
+  plugins: [
+    react(),
+    brotli(),
+    visualizer({
+      gzipSize: true,
+      brotliSize: true,
+      open: false,
+      template: 'treemap',
+    }),
+  ],
   test: {
     include: ['sources/tests/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },

@@ -1,8 +1,9 @@
 import { createRoot } from 'react-dom/client'
-import { App } from 'antd'
+// import { App } from 'antd'
 
-import './styles/global.scss'
+// import './styles/global.scss'
 
+console.log('hello world');
 createRoot(document.getElementById('root')).render(
   // <ConfigProvider
   //   theme={{
@@ -15,10 +16,9 @@ createRoot(document.getElementById('root')).render(
   //     },
   //   }}
   // >
-  <App>
+  // <App>
     <p>Hello world</p>
-    {/* <Routes /> */}
-  </App>
+  // </App>
   // </ConfigProvider>
   // </ToastContextProvider>
 )

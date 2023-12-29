@@ -4,15 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"tsr watch\" \"vite\"",
+    "build": "tsr generate && vite build",
     "watch": "vite build --watch",
-    "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test:ui": "vitest --ui --environment jsdom",
     "test:run": "vitest run --environment jsdom"
   },
   "dependencies": {
+    "@tanstack/react-router": "^1.0.6",
+    "@tanstack/router-cli": "^1.0.6",
+    "@tanstack/router-devtools": "^1.0.6",
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.2.6",

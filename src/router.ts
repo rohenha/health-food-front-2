@@ -6,13 +6,20 @@ import { components, hooks, utils } from '@generouted/react-router/client'
 export type Path =
   | `/`
   | `/account`
+  | `/account/edit`
   | `/dashboard`
   | `/planning`
+  | `/planning/create`
   | `/recipes`
+  | `/recipes/:id`
+  | `/recipes/:id/edit`
   | `/sign-in`
   | `/sign-up`
 
-export type Params = {}
+export type Params = {
+  '/recipes/:id': { id: string }
+  '/recipes/:id/edit': { id: string }
+}
 
 export type ModalPath = never
 

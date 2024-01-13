@@ -19,7 +19,7 @@ export default defineConfig({
       '@hooks/': `${srcFolder}/hooks/`,
       '@libs/': `${srcFolder}/libs/`,
       '@pages/': `${srcFolder}/pages/`,
-      '@store/': `${srcFolder}/store/`,
+      '@stores/': `${srcFolder}/stores/`,
       '@styles/': `${srcFolder}/styles/`,
     },
   },

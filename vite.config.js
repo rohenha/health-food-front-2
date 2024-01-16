@@ -5,8 +5,10 @@ import { dirname } from 'path'
 import brotli from 'rollup-plugin-brotli'
 import { visualizer } from 'rollup-plugin-visualizer'
 import react from '@vitejs/plugin-react'
+import generouted from '@generouted/react-router/plugin'
 
 // Global
+// eslint-disable-next-line no-undef
 const srcFolder = dirname(__filename) + '/src'
 
 export default defineConfig({
@@ -17,7 +19,7 @@ export default defineConfig({
       '@hooks/': `${srcFolder}/hooks/`,
       '@libs/': `${srcFolder}/libs/`,
       '@pages/': `${srcFolder}/pages/`,
-      '@store/': `${srcFolder}/store/`,
+      '@stores/': `${srcFolder}/stores/`,
       '@styles/': `${srcFolder}/styles/`,
     },
   },
@@ -46,6 +48,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    generouted(),
     brotli(),
     visualizer({
       gzipSize: true,

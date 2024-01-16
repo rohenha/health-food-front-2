@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@components/': `${srcFolder}/components/`,
+      '@': `${srcFolder}`,
       '@contexts/': `${srcFolder}/contexts/`,
       '@hooks/': `${srcFolder}/hooks/`,
       '@libs/': `${srcFolder}/libs/`,

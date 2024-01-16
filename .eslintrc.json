@@ -38,6 +38,7 @@
     "import/resolver": {
       "alias": [
         // I have my actions folder in ./shared/actions
+        ["@", "./src"],
         ["@styles", "./src/styles"],
         ["@components", "./src/components"],
         ["@pages", "./src/pages"],

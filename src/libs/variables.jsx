@@ -1,47 +1,38 @@
-import {
-  HomeOutlined,
-  PlusOutlined,
-  CalendarOutlined,
-  FolderOpenOutlined,
-  UserOutlined,
-  SearchOutlined,
-} from '@ant-design/icons'
-
 export const nav = [
   {
     url: '/app',
     title: 'Dashboard',
-    icon: <HomeOutlined />,
+    icon: '',
     content: 'Dashboard',
   },
   {
     url: '/app/recipes/new',
     title: 'Nouvelle recette',
-    icon: <PlusOutlined />,
+    icon: '',
     content: 'Ajouter',
   },
   {
     url: '/app/recipes/search',
     title: 'Rechercher une recette',
-    icon: <SearchOutlined />,
+    icon: '',
     content: 'Rechercher',
   },
   {
     url: '/app/planning',
     title: 'Planning',
-    icon: <CalendarOutlined />,
+    icon: '',
     content: 'Planning',
   },
   {
     url: '/app/recipes',
     title: 'Recettes',
-    icon: <FolderOpenOutlined />,
+    icon: '',
     content: 'Mes recettes',
   },
   {
     url: '/app/account',
     title: 'Mon Compte',
-    icon: <UserOutlined />,
+    icon: '',
     content: 'Moi',
   },
 ]

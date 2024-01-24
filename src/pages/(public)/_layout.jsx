@@ -1,10 +1,11 @@
 import { Outlet, Navigate } from 'react-router-dom'
 
-import { isLoggedIn } from '@stores/auth'
+import { useUserStore } from '@stores/auth'
 
 export default function Public() {
-  console.log(isLoggedIn.value)
-  if (isLoggedIn.value) {
+  const isLoggedIn = useUserStore.use.isLoggedIn()
+
+  if (isLoggedIn) {
     return <Navigate to="/dashboard" replace />
   }
 

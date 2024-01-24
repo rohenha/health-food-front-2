@@ -1,9 +1,10 @@
 import { Outlet, Link, Navigate } from 'react-router-dom'
 
-import { isLoggedIn } from '@stores/auth'
+import { useUserStore } from '@stores/auth'
 
 export default function Auth() {
-  if (!isLoggedIn.value) {
+  const isLoggedIn = useUserStore.use.isLoggedIn()
+  if (!isLoggedIn) {
     return <Navigate to="/sign-in" replace />
   }
 

@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import Button from '@components/atoms/Button'
 import InputField from '@components/atoms/InputField'
 
-import useAuth from '@hooks/Auth'
+import { useUserStore } from '@stores/auth'
 
 const schema = yup
   .object({
@@ -16,7 +16,8 @@ const schema = yup
   .required()
 
 export default function SignIn() {
-  const { onLogin } = useAuth()
+  const login = useUserStore.use.login()
+
   const {
     register,
     handleSubmit,
@@ -28,9 +29,9 @@ export default function SignIn() {
 
   const onSubmit = useMemo(() => {
     return async (data) => {
-      await onLogin(data, '/app')
+      await login(data)
     }
-  }, [onLogin])
+  }, [login])
 
   console.log('init sign in')
 

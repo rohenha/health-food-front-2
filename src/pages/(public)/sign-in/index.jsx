@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { Link } from 'react-router-dom'
 
-// import Button from '@components/atoms/Button'
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
 import { Switch } from '@components/ui/switch'
@@ -127,8 +127,10 @@ export default function SignIn() {
         </Form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline">S'inscrire</Button>
-        <Button>Se connecter</Button>
+        <Button variant="outline" asChild>
+          <Link to="/sign-up">S'inscrire</Link>
+        </Button>
+        <Button onClick={form.handleSubmit(onSubmit)}>Se connecter</Button>
       </CardFooter>
     </Card>
 

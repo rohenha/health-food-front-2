@@ -40,8 +40,8 @@
         // I have my actions folder in ./shared/actions
         ["@", "./src"],
         ["@styles", "./src/styles"],
-        ["@components", "./src/components"],
-        ["@pages", "./src/pages"],
+        ["@components", "src/components"],
+        ["@pages", "src/pages"],
         ["@libs", "./src/libs"],
         ["@hooks", "./src/hooks"],
         ["@contexts", "./src/contexts"]

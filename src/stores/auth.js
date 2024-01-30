@@ -22,17 +22,14 @@ export const useUserStore = createSelectors(
         isLoggedIn: false,
         login: async (form) => {
           const data = await signIn(form)
-          console.log(data)
           if (data.jwt) {
             set({ user: data.user, token: data.jwt, isLoggedIn: true })
             return data
           } else {
-            return null
+            return data
           }
         },
         logout: () => {
-          // Cookies.remove('user')
-          // sessionStorage.removeItem('user')
           set({ user: null, token: null, isLoggedIn: false })
           return true
         },

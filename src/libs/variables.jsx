@@ -1,36 +1,36 @@
 export const nav = [
   {
-    url: '/app',
+    url: '/dashboard',
     title: 'Dashboard',
     icon: '',
     content: 'Dashboard',
   },
   {
-    url: '/app/recipes/new',
+    url: '/recipes/new',
     title: 'Nouvelle recette',
     icon: '',
     content: 'Ajouter',
   },
   {
-    url: '/app/recipes/search',
+    url: '/recipes/search',
     title: 'Rechercher une recette',
     icon: '',
     content: 'Rechercher',
   },
   {
-    url: '/app/planning',
+    url: '/planning',
     title: 'Planning',
     icon: '',
     content: 'Planning',
   },
   {
-    url: '/app/recipes',
+    url: '/recipes',
     title: 'Recettes',
     icon: '',
     content: 'Mes recettes',
   },
   {
-    url: '/app/account',
+    url: '/account',
     title: 'Mon Compte',
     icon: '',
     content: 'Moi',

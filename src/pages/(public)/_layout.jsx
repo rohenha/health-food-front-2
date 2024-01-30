@@ -10,9 +10,8 @@ export default function Public() {
   }
 
   return (
-    <>
-      <p>Public</p>
+    <div className="h-screen flex justify-center items-center">
       <Outlet />
-    </>
+    </div>
   )
 }

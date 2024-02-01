@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useSearchParams } from 'react-router-dom'
 import * as yup from 'yup'
 
+import { useToast } from '@hooks/use-toast'
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
 
@@ -42,12 +43,12 @@ const schema = yup
 
 export default function ResetPassword() {
   const resetPassword = useUserStore.use.resetPassword()
+  const { toast } = useToast()
   let [searchParams] = useSearchParams()
   const code = searchParams.get('code')
 
   const form = useForm({
     resolver: yupResolver(schema),
-    // mode: 'onTouched',
     defaultValues: {
       code: code || '',
       password: '',
@@ -58,15 +59,22 @@ export default function ResetPassword() {
   const onSubmit = useMemo(() => {
     return async (data) => {
       const response = await resetPassword(data)
-      console.log(response)
-      if (!response.jwt) {
-        form.setError('global', {
-          type: 'manual',
-          message: response.error.message,
+      if (response.jwt) {
+        toast({
+          title: 'Mot de passe réinitialisé',
+          description: 'Votre mot de passe a bien été réinitialisé',
+          variant: 'success',
+        })
+      } else {
+        toast({
+          title: 'Erreur',
+          description:
+            'Une erreur est survenue pendant la réinitialisation, veuillez réessayer',
+          variant: 'destructive',
         })
       }
     }
-  }, [resetPassword, form])
+  }, [resetPassword, toast])
 
   console.log('init reset password')
 
@@ -118,12 +126,6 @@ export default function ResetPassword() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-
-            <FormField
-              control={form.control}
-              name="global"
-              render={() => <FormMessage />}
             />
 
             <FormField

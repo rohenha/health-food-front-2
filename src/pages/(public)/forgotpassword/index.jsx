@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Link } from 'react-router-dom'
+import { useToast } from '@hooks/use-toast'
 
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
@@ -23,39 +24,49 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from '@components/ui/card'
 
 import { useUserStore } from '@stores/auth'
 
 const schema = yup
   .object({
-    identifier: yup.string().required('Vous devez remplir votre email'),
+    email: yup.string().required('Vous devez remplir votre email'),
   })
   .required()
 
 export default function SignIn() {
-  const login = useUserStore.use.login()
+  const forgotPassword = useUserStore.use.forgotPassword()
+  const { toast } = useToast()
 
   const form = useForm({
     resolver: yupResolver(schema),
     // mode: 'onTouched',
     defaultValues: {
-      identifier: '',
+      email: '',
     },
   })
 
   const onSubmit = useMemo(() => {
     return async (data) => {
-      const response = await login(data)
-      console.log(response)
-      if (!response.jwt) {
-        form.setError('global', {
-          type: 'manual',
-          message: response.error.message,
+      const sent = await forgotPassword(data)
+      if (sent) {
+        toast({
+          title: 'Email envoyé',
+          description:
+            'Vérifiez votre boite mail pour réinitialiser votre mot de passe',
+          variant: 'success',
+        })
+      } else {
+        toast({
+          title: 'Erreur',
+          description:
+            "Une erreur s'est produite lors de l'envoi du mail de réinitialisation",
+          variant: 'destructive',
         })
       }
     }
-  }, [login, form])
+  }, [forgotPassword, toast])
 
   console.log('init Forget')
 
@@ -63,27 +74,26 @@ export default function SignIn() {
     <Card className="w-2/3">
       <CardHeader>
         <CardTitle>Mot de passe oublié</CardTitle>
+        <CardDescription>
+          Entrez votre email pour recevoir un email pour réinitialiser votre mot
+          de passe
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="identifier"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email ou Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="test@test.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <FormField
-              control={form.control}
-              name="global"
-              render={() => <FormMessage />}
             />
           </form>
         </Form>

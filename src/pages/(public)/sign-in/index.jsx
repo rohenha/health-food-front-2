@@ -4,6 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Link } from 'react-router-dom'
 
+import { useToast } from '@hooks/use-toast'
+
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
 import { Switch } from '@components/ui/switch'
@@ -36,13 +38,14 @@ const schema = yup
     password: yup
       .string()
       .required('Veuillez entrer un mot de passe')
-      .min(8, 'Le mot de passe est trop court (8 caractères minimums)')
-      .matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres'),
+      .min(8, 'Le mot de passe est trop court (8 caractères minimums)'),
+    // .matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres'),
   })
   .required()
 
 export default function SignIn() {
   const login = useUserStore.use.login()
+  const { toast } = useToast()
 
   const form = useForm({
     resolver: yupResolver(schema),
@@ -57,15 +60,20 @@ export default function SignIn() {
   const onSubmit = useMemo(() => {
     return async (data) => {
       const response = await login(data)
-      console.log(response)
-      if (!response.jwt) {
-        form.setError('global', {
-          type: 'manual',
-          message: response.error.message,
+      if (response.jwt) {
+        toast({
+          title: 'Welcome back !',
+          variant: 'success',
+        })
+      } else {
+        toast({
+          description: response.error.message,
+          title: 'Erreur',
+          variant: 'destructive',
         })
       }
     }
-  }, [login, form])
+  }, [login, toast])
 
   console.log('init sign in')
 
@@ -73,7 +81,9 @@ export default function SignIn() {
     <Card className="w-2/3">
       <CardHeader>
         <CardTitle>Sign in</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardDescription>
+          Entrez votre email pour créer votre compte
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -120,12 +130,6 @@ export default function SignIn() {
                   </div>
                 </FormItem>
               )}
-            />
-
-            <FormField
-              control={form.control}
-              name="global"
-              render={() => <FormMessage />}
             />
           </form>
         </Form>

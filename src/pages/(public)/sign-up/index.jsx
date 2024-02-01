@@ -4,6 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Link } from 'react-router-dom'
 
+import { useToast } from '@hooks/use-toast'
+
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
 
@@ -37,8 +39,8 @@ const schema = yup
     password: yup
       .string()
       .required('Veuillez entrer un mot de passe')
-      .min(8, 'Le mot de passe est trop court (8 caractères minimums)')
-      .matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres'),
+      .min(8, 'Le mot de passe est trop court (8 caractères minimums)'),
+    // .matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres'),
     passwordConfirmation: yup
       .string()
       .oneOf(
@@ -50,6 +52,7 @@ const schema = yup
 
 export default function SignUp() {
   const signUp = useUserStore.use.signUp()
+  const { toast } = useToast()
 
   const form = useForm({
     resolver: yupResolver(schema),
@@ -67,15 +70,21 @@ export default function SignUp() {
     return async (data) => {
       console.log('submit')
       const response = await signUp(data)
-      console.log(response)
-      if (!response.jwt) {
-        form.setError('global', {
-          type: 'manual',
-          message: response.error.message,
+      if (response.jwt) {
+        toast({
+          title: 'Welcome !',
+          description: 'Bienvenue chez nous, découvrez notre application',
+          variant: 'success',
+        })
+      } else {
+        toast({
+          description: response.error.message,
+          title: 'Erreur',
+          variant: 'destructive',
         })
       }
     }
-  }, [signUp, form])
+  }, [signUp, toast])
 
   console.log('init sign up')
 
@@ -156,12 +165,6 @@ export default function SignUp() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-
-            <FormField
-              control={form.control}
-              name="global"
-              render={() => <FormMessage />}
             />
           </form>
         </Form>

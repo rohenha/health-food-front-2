@@ -1,14 +1,12 @@
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useSearchParams } from 'react-router-dom'
 import * as yup from 'yup'
-import { Link } from 'react-router-dom'
 
 import { useToast } from '@hooks/use-toast'
-
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
-import { Switch } from '@components/ui/switch'
 
 import {
   Form,
@@ -30,77 +28,65 @@ import {
 
 import { useUserStore } from '@stores/auth'
 
-import './index.scss'
-
 const schema = yup
   .object({
-    identifier: yup.string().required("Vous devez remplir l'identifiant"),
-    password: yup
+    code: yup.string().required('Veuillez entrer la clé'),
+    password: yup.string().required('Veuillez entrer un mot de passe'),
+    passwordConfirmation: yup
       .string()
-      .required('Veuillez entrer un mot de passe')
-      .min(8, 'Le mot de passe est trop court (8 caractères minimums)'),
-    // .matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres'),
+      .oneOf(
+        [yup.ref('password'), null],
+        'Les mots de passe doivent être équivalent',
+      ),
   })
   .required()
 
-export default function SignIn() {
-  const login = useUserStore.use.login()
+export default function ResetPassword() {
+  const resetPassword = useUserStore.use.resetPassword()
   const { toast } = useToast()
+  let [searchParams] = useSearchParams()
+  const code = searchParams.get('code')
 
   const form = useForm({
     resolver: yupResolver(schema),
-    // mode: 'onTouched',
     defaultValues: {
-      identifier: '',
+      code: code || '',
       password: '',
-      remember: false,
+      passwordConfirmation: '',
     },
   })
 
   const onSubmit = useMemo(() => {
     return async (data) => {
-      const response = await login(data)
+      const response = await resetPassword(data)
       if (response.jwt) {
         toast({
-          title: 'Welcome back !',
+          title: 'Mot de passe réinitialisé',
+          description: 'Votre mot de passe a bien été réinitialisé',
           variant: 'success',
         })
       } else {
         toast({
-          description: response.error.message,
           title: 'Erreur',
+          description:
+            'Une erreur est survenue pendant la réinitialisation, veuillez réessayer',
           variant: 'destructive',
         })
       }
     }
-  }, [login, toast])
+  }, [resetPassword, toast])
 
-  console.log('init sign in')
+  console.log('init reset password')
 
   return (
     <Card className="w-2/3">
       <CardHeader>
-        <CardTitle>Sign in</CardTitle>
-        <CardDescription>
-          Entrez votre email pour créer votre compte
-        </CardDescription>
+        <CardTitle>Reset Password</CardTitle>
+        <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="identifier"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email ou Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="test@test.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="password"
@@ -114,31 +100,46 @@ export default function SignIn() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="remember"
+              name="passwordConfirmation"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormItem>
+                  <FormLabel>Confirmer le mot de passe</FormLabel>
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Input type="password" placeholder="******" {...field} />
                   </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Se souvenir de moi</FormLabel>
-                  </div>
+                  <FormMessage />
                 </FormItem>
               )}
+            />
+
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem hidden>
+                  <FormControl>
+                    <Input type="hidden" placeholder="******" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="code"
+              render={() => <FormMessage />}
             />
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" asChild>
-          <Link to="/sign-up">S'inscrire</Link>
+      <CardFooter className="flex justify-end">
+        <Button onClick={form.handleSubmit(onSubmit)}>
+          Modifier mon mot de passe
         </Button>
-        <Button onClick={form.handleSubmit(onSubmit)}>Se connecter</Button>
       </CardFooter>
     </Card>
   )

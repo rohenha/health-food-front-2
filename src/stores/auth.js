@@ -1,52 +1,65 @@
-import { signal, computed } from '@preact/signals-react'
-import Cookies from 'js-cookie'
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
-import { signIn } from '@libs/strapi'
+import { signIn, signUp, resetPassword, forgotPassword } from '@libs/strapi'
 
-// Check if user is Auth on start
-const getAuth = () => {
-  const userCookie = Cookies.get('user')
-  const userSession = sessionStorage.getItem('user')
-  const userData = userCookie || userSession
-  if (userData === null) {
-    return null
+const createSelectors = (_store) => {
+  let store = _store
+  store.use = {}
+  for (let k of Object.keys(store.getState())) {
+    store.use[k] = () => store((s) => s[k])
   }
-  return JSON.parse(userData)
+
+  return store
 }
 
-// User state
-export const user = signal(getAuth())
-
-// Check if user is auth
-export const isLoggedIn = computed(() => {
-  return !!user.value
-})
-
-// Update user state on login
-export const onLogin = async (form) => {
-  const data = await signIn(form)
-
-  if (data.jwt) {
-    const userData = { ...data.user, token: data.jwt }
-    const userDataString = JSON.stringify(userData)
-    if (form.remember === 'true') {
-      Cookies.set('user', userDataString, { expires: 30 })
-    }
-    sessionStorage.setItem('user', userDataString)
-    user.value = data
-    return data
-    // success login
-  } else {
-    return null
-    // error
-  }
-}
-
-// Update user state on logout
-export const onLogout = async () => {
-  Cookies.remove('user')
-  sessionStorage.removeItem('user')
-  user.value = null
-  return true
-  // Success logout
-}
+export const useUserStore = createSelectors(
+  create(
+    persist(
+      (set) => ({
+        user: null,
+        token: null,
+        isLoggedIn: false,
+        resetPassword: async (form) => {
+          const data = await resetPassword(form)
+          if (data.jwt) {
+            set({ user: data.user, token: data.jwt, isLoggedIn: true })
+            return data
+          } else {
+            return data
+          }
+        },
+        forgotPassword: async (form) => {
+          const data = await forgotPassword(form)
+          return data.ok
+        },
+        signUp: async (form) => {
+          const data = await signUp(form)
+          if (data.jwt) {
+            set({ user: data.user, token: data.jwt, isLoggedIn: true })
+            return data
+          } else {
+            return data
+          }
+        },
+        login: async (form) => {
+          const data = await signIn(form)
+          if (data.jwt) {
+            set({ user: data.user, token: data.jwt, isLoggedIn: true })
+            return data
+          } else {
+            return data
+          }
+        },
+        logout: () => {
+          set({ user: null, token: null, isLoggedIn: false })
+          return true
+        },
+      }),
+      {
+        name: 'health-food-auth',
+        storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+      },
+    ),
+  ),
+)

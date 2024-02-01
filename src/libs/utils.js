@@ -1,3 +1,6 @@
+import { clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
 /**
  * Debouncing enforces that a function not be called again until a certain amount of time has passed without it being called.
  * As in "execute this function only if 100 milliseconds have passed without it being called."
@@ -68,4 +71,8 @@ export const throttle = (callback, delay) => {
       callback.apply(context, args)
     }
   }
+}
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs))
 }

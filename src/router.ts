@@ -8,11 +8,13 @@ export type Path =
   | `/account`
   | `/account/edit`
   | `/dashboard`
+  | `/forgotpassword`
   | `/planning`
   | `/planning/create`
   | `/recipes`
   | `/recipes/:id`
   | `/recipes/:id/edit`
+  | `/resetpassword`
   | `/sign-in`
   | `/sign-up`
 

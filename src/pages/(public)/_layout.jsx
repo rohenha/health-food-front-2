@@ -10,7 +10,8 @@ export default function Public() {
   }
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex flex-col gap-20 justify-center items-center">
+      <h1 className="text-6xl font-bold uppercase">Health food</h1>
       <Outlet />
     </div>
   )

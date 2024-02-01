@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useSearchParams } from 'react-router-dom'
 import * as yup from 'yup'
-import { Link } from 'react-router-dom'
 
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
@@ -29,16 +29,8 @@ import { useUserStore } from '@stores/auth'
 
 const schema = yup
   .object({
-    name: yup.string().required('Vous devez remplir le nom'),
-    email: yup
-      .string()
-      .email("L'email doit être valide")
-      .required("Vous devez remplir l'email"),
-    password: yup
-      .string()
-      .required('Veuillez entrer un mot de passe')
-      .min(8, 'Le mot de passe est trop court (8 caractères minimums)')
-      .matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres'),
+    code: yup.string().required('Veuillez entrer la clé'),
+    password: yup.string().required('Veuillez entrer un mot de passe'),
     passwordConfirmation: yup
       .string()
       .oneOf(
@@ -48,16 +40,16 @@ const schema = yup
   })
   .required()
 
-export default function SignUp() {
-  const signUp = useUserStore.use.signUp()
+export default function ResetPassword() {
+  const resetPassword = useUserStore.use.resetPassword()
+  let [searchParams] = useSearchParams()
+  const code = searchParams.get('code')
 
   const form = useForm({
     resolver: yupResolver(schema),
     // mode: 'onTouched',
     defaultValues: {
-      email: '',
-      name: '',
-      username: '',
+      code: code || '',
       password: '',
       passwordConfirmation: '',
     },
@@ -65,8 +57,7 @@ export default function SignUp() {
 
   const onSubmit = useMemo(() => {
     return async (data) => {
-      console.log('submit')
-      const response = await signUp(data)
+      const response = await resetPassword(data)
       console.log(response)
       if (!response.jwt) {
         form.setError('global', {
@@ -75,62 +66,19 @@ export default function SignUp() {
         })
       }
     }
-  }, [signUp, form])
+  }, [resetPassword, form])
 
-  console.log('init sign up')
+  console.log('init reset password')
 
   return (
     <Card className="w-2/3">
       <CardHeader>
-        <CardTitle>S'inscrire</CardTitle>
+        <CardTitle>Reset Password</CardTitle>
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="test@test.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nom</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Jean" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Identifiant</FormLabel>
-                  <FormControl>
-                    <Input placeholder="jean72" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="password"
@@ -144,6 +92,7 @@ export default function SignUp() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="passwordConfirmation"
@@ -160,17 +109,35 @@ export default function SignUp() {
 
             <FormField
               control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem hidden>
+                  <FormControl>
+                    <Input type="hidden" placeholder="******" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="global"
+              render={() => <FormMessage />}
+            />
+
+            <FormField
+              control={form.control}
+              name="code"
               render={() => <FormMessage />}
             />
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" asChild>
-          <Link to="/sign-in">Se connecter</Link>
+      <CardFooter className="flex justify-end">
+        <Button onClick={form.handleSubmit(onSubmit)}>
+          Modifier mon mot de passe
         </Button>
-        <Button onClick={form.handleSubmit(onSubmit)}>S'inscrire</Button>
       </CardFooter>
     </Card>
   )

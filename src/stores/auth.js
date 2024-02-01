@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
-import { signIn } from '@libs/strapi'
+import { signIn, signUp, resetPassword } from '@libs/strapi'
 
 const createSelectors = (_store) => {
   let store = _store
@@ -20,6 +20,24 @@ export const useUserStore = createSelectors(
         user: null,
         token: null,
         isLoggedIn: false,
+        resetPassword: async (form) => {
+          const data = await resetPassword(form)
+          if (data.jwt) {
+            set({ user: data.user, token: data.jwt, isLoggedIn: true })
+            return data
+          } else {
+            return data
+          }
+        },
+        signUp: async (form) => {
+          const data = await signUp(form)
+          if (data.jwt) {
+            set({ user: data.user, token: data.jwt, isLoggedIn: true })
+            return data
+          } else {
+            return data
+          }
+        },
         login: async (form) => {
           const data = await signIn(form)
           if (data.jwt) {

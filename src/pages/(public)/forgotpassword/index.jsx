@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
-import { Switch } from '@components/ui/switch'
+import { ChevronLeft } from 'lucide-react'
 
 import {
   Form,
@@ -20,7 +20,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -28,16 +27,9 @@ import {
 
 import { useUserStore } from '@stores/auth'
 
-import './index.scss'
-
 const schema = yup
   .object({
-    identifier: yup.string().required("Vous devez remplir l'identifiant"),
-    password: yup
-      .string()
-      .required('Veuillez entrer un mot de passe')
-      .min(8, 'Le mot de passe est trop court (8 caractères minimums)')
-      .matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres'),
+    identifier: yup.string().required('Vous devez remplir votre email'),
   })
   .required()
 
@@ -49,8 +41,6 @@ export default function SignIn() {
     // mode: 'onTouched',
     defaultValues: {
       identifier: '',
-      password: '',
-      remember: false,
     },
   })
 
@@ -67,13 +57,12 @@ export default function SignIn() {
     }
   }, [login, form])
 
-  console.log('init sign in')
+  console.log('init Forget')
 
   return (
     <Card className="w-2/3">
       <CardHeader>
-        <CardTitle>Sign in</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>Mot de passe oublié</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -93,37 +82,6 @@ export default function SignIn() {
             />
             <FormField
               control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="******" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="remember"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Se souvenir de moi</FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name="global"
               render={() => <FormMessage />}
             />
@@ -132,9 +90,11 @@ export default function SignIn() {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline" asChild>
-          <Link to="/sign-up">S'inscrire</Link>
+          <Link to="/sign-up">
+            <ChevronLeft className="mr-2 h-4 w-4" /> Retour
+          </Link>
         </Button>
-        <Button onClick={form.handleSubmit(onSubmit)}>Se connecter</Button>
+        <Button onClick={form.handleSubmit(onSubmit)}>Réinitialiser</Button>
       </CardFooter>
     </Card>
   )

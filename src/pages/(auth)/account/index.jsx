@@ -30,11 +30,31 @@ export default function Account() {
   }, [logout, toast])
 
   return (
-    <div>
-      <h1>Account</h1>
-      <Button variant="destructive" onClick={onLogout}>
-        se déconnecter
-      </Button>
-    </div>
+    <>
+      <div className="space-y-6 p-10 pb-16">
+        <div className="space-y-0.5">
+          <h2 className="text-2xl font-bold tracking-tight">Mon compte</h2>
+          <p className="text-muted-foreground">
+            Manage your account settings and set e-mail preferences.
+          </p>
+        </div>
+        <div
+          data-orientation="horizontal"
+          role="none"
+          className="shrink-0 bg-border h-[1px] w-full my-6"
+        ></div>
+        <nav className="flex flex-col space-y-1 md:items-start ">
+          <Button variant="ghost" to="/account/edit" className="justify-start">
+            Editer mon profile
+          </Button>
+          <Button variant="destructive" onClick={onLogout}>
+            se déconnecter
+          </Button>
+        </nav>
+      </div>
+    </>
+    // <div>
+    //   <h1>Account</h1>
+    // </div>
   )
 }

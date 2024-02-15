@@ -17,7 +17,7 @@ export default function Auth() {
     <>
       <Outlet />
       <Toaster />
-      <nav className="absolute bottom-6 left-1/2 transform -translate-x-1/2 border rounded-lg bg-background text-center overflow-hidden">
+      <nav className="absolute w-4/5 max-w-xl bottom-6 left-1/2 transform -translate-x-1/2 border rounded-lg bg-background text-center overflow-hidden">
         <ul className="grid grid-cols-5 align-center ">
           {nav.map((item, key) => (
             <li key={`nav${key}`}>

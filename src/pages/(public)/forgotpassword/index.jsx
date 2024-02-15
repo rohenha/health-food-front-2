@@ -71,41 +71,46 @@ export default function SignIn() {
   console.log('init Forget')
 
   return (
-    <Card className="w-2/3">
-      <CardHeader>
-        <CardTitle>Mot de passe oublié</CardTitle>
-        <CardDescription>
+    <>
+      <Link
+        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 absolute right-4 top-4 md:right-8 md:top-8"
+        to="/sign-in"
+      >
+        Se connecter
+      </Link>
+      <div className="flex flex-col space-y-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Mot de passe oublié
+        </h1>
+        <p className="text-sm text-muted-foreground">
           Entrez votre email pour recevoir un email pour réinitialiser votre mot
           de passe
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </p>
+      </div>
+      <div className="grid gap-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="test@test.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-4">
+              <div className="grid gap-1">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="test@test.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button>Réinitialiser mon mot de passe</Button>
+            </div>
           </form>
         </Form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" asChild>
-          <Link to="/sign-up">
-            <ChevronLeft className="mr-2 h-4 w-4" /> Retour
-          </Link>
-        </Button>
-        <Button onClick={form.handleSubmit(onSubmit)}>Réinitialiser</Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </>
   )
 }

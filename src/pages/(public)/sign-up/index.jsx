@@ -18,15 +18,6 @@ import {
   FormMessage,
 } from '@components/ui/form'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card'
-
 import { useUserStore } from '@stores/auth'
 
 const schema = yup

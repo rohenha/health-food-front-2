@@ -6,12 +6,6 @@ export const nav = [
     content: 'Dashboard',
   },
   {
-    url: '/recipes/new',
-    title: 'Nouvelle recette',
-    icon: '',
-    content: 'Ajouter',
-  },
-  {
     url: '/recipes/search',
     title: 'Rechercher une recette',
     icon: '',

@@ -7,7 +7,6 @@ import { useToast } from '@hooks/use-toast'
 
 import { Input } from '@components/ui/input'
 import { Button } from '@components/ui/button'
-import { ChevronLeft } from 'lucide-react'
 
 import {
   Form,
@@ -17,15 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@components/ui/form'
-
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@components/ui/card'
 
 import { useUserStore } from '@stores/auth'
 

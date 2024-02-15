@@ -150,7 +150,7 @@ export default function SignIn() {
             </span>
           </div>
         </div>
-        <Button type="button">
+        <Button variant="outline">
           <svg viewBox="0 0 438.549 438.549" className="mr-2 h-4 w-4">
             <path
               fill="currentColor"

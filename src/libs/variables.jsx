@@ -23,12 +23,6 @@ export const nav = [
     icon: '',
     content: 'Mes recettes',
   },
-  {
-    url: '/account',
-    title: 'Mon Compte',
-    icon: '',
-    content: 'Moi',
-  },
 ]
 
 export const difficulties = [

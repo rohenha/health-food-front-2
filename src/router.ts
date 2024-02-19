@@ -11,6 +11,7 @@ export type Path =
   | `/forgotpassword`
   | `/planning`
   | `/planning/create`
+  | `/planning/shopping-list`
   | `/recipes`
   | `/recipes/:id`
   | `/recipes/:id/edit`

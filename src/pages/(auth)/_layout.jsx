@@ -1,4 +1,4 @@
-import { Outlet, Link, Navigate } from 'react-router-dom'
+import { Outlet, NavLink, Navigate } from 'react-router-dom'
 
 import { Toaster } from '@components/ui/toaster'
 import { useUserStore } from '@stores/auth'
@@ -9,22 +9,30 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar'
 export default function Auth() {
   const isLoggedIn = useUserStore.use.isLoggedIn()
 
-  if (!isLoggedIn) {
-    return <Navigate to="/sign-in" replace />
-  }
+  // if (!isLoggedIn) {
+  //   return <Navigate to="/sign-in" replace />
+  // }
 
   return (
     <>
       <Outlet />
       <Toaster />
-      <nav className="absolute w-4/5 max-w-xl bottom-6 left-1/2 transform -translate-x-1/2 border rounded-lg bg-background text-center overflow-hidden">
-        <ul className="grid grid-cols-5 align-center ">
+      <nav className="fixed w-9/12 md:w-auto bottom-6 left-1/2 transform -translate-x-1/2 border rounded-lg bg-background text-center overflow-hidden">
+        <ul className="flex align-center justify-between">
           {nav.map((item, key) => (
             <li key={`nav${key}`}>
-              <Link
+              <NavLink
                 to={item.url}
                 title={item.title}
-                className="flex flex-col gap-1 items-center justify-center text-sm px-2.5 py-2 h-full hover:bg-accent hover:text-accent-foreground"
+                end
+                className={({ isActive }) => {
+                  const string =
+                    'flex flex-col gap-1 items-center justify-center text-xs px-2.5 py-2 h-full hover:text-primary hover:text-accent-foreground'
+                  if (isActive) {
+                    return string + ' text-primary'
+                  }
+                  return string
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -41,14 +49,21 @@ export default function Auth() {
                   ></path>
                 </svg>
                 {item.content}
-              </Link>
+              </NavLink>
             </li>
           ))}
           <li>
-            <Link
+            <NavLink
               to="/account"
               title="Mon compte"
-              className="text-sm px-2.5 py-2 h-full h-full block hover:bg-accent hover:text-accent-foreground"
+              className={({ isActive }) => {
+                const string =
+                  'text-sm px-2.5 py-2 h-full h-full block hover:bg-accent hover:text-accent-foreground'
+                if (isActive) {
+                  return string + ' text-primary'
+                }
+                return string
+              }}
             >
               <Avatar className="m-auto">
                 <AvatarImage
@@ -57,7 +72,7 @@ export default function Auth() {
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>

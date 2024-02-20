@@ -3,7 +3,6 @@ import { Checkbox } from '@components/ui/checkbox'
 export default function ShoppingItem({ name, id, cover, quantity = '' }) {
   return (
     <div className="flex items-center space-x-4">
-      <Checkbox id={id} />
       <label
         htmlFor={id}
         className="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 w-full py-5 flex items-center space-x-4"
@@ -18,6 +17,7 @@ export default function ShoppingItem({ name, id, cover, quantity = '' }) {
           <span className="text-sm text-slate-500">{quantity}</span>
         </span>
       </label>
+      <Checkbox id={id} className="h-8 w-8" />
     </div>
   )
 }

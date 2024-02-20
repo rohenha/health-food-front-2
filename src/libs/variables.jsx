@@ -21,7 +21,7 @@ export const nav = [
     url: '/recipes',
     title: 'Recettes',
     icon: '',
-    content: 'Mes recettes',
+    content: 'recettes',
   },
 ]
 

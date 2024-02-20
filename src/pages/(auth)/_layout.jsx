@@ -15,9 +15,11 @@ export default function Auth() {
 
   return (
     <>
-      <Outlet />
+      <div className="px-4 pt-16 pb-36 lg:px-10 max-w-screen-xl mx-auto">
+        <Outlet />
+      </div>
       <Toaster />
-      <nav className="fixed w-9/12 md:w-auto bottom-6 left-1/2 transform -translate-x-1/2 border rounded-lg bg-background text-center overflow-hidden">
+      <nav className="fixed w-auto bottom-3 md:bottom-6 left-1/2 transform -translate-x-1/2 border rounded-lg bg-background text-center overflow-hidden">
         <ul className="flex align-center justify-between">
           {nav.map((item, key) => (
             <li key={`nav${key}`}>

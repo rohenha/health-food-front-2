@@ -1,7 +1,9 @@
+import HeroApp from '@components/molecules/hero-app'
+
 export default function Edit() {
   return (
     <div>
-      <h1>Edit</h1>
+      <HeroApp title="Modifier mon profil" subtitle="" />
     </div>
   )
 }

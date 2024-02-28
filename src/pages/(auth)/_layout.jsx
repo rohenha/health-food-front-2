@@ -9,9 +9,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar'
 export default function Auth() {
   const isLoggedIn = useUserStore.use.isLoggedIn()
 
-  // if (!isLoggedIn) {
-  //   return <Navigate to="/sign-in" replace />
-  // }
+  if (!isLoggedIn) {
+    return <Navigate to="/sign-in" replace />
+  }
 
   return (
     <>

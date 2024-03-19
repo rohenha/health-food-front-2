@@ -22,7 +22,7 @@ import { useUserStore } from '@stores/auth'
 
 const schema = yup
   .object({
-    name: yup.string().required('Vous devez remplir le nom'),
+    username: yup.string().required('Vous devez remplir le nom'),
     email: yup
       .string()
       .email("L'email doit être valide")
@@ -50,7 +50,7 @@ export default function SignUp() {
     // mode: 'onTouched',
     defaultValues: {
       email: '',
-      name: '',
+      // name: '',
       username: '',
       password: '',
       passwordConfirmation: '',
@@ -83,7 +83,7 @@ export default function SignUp() {
     <>
       <Link
         className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 absolute right-4 top-4 md:right-8 md:top-8"
-        to="/sign-in"
+        to="/"
       >
         Se connecter
       </Link>

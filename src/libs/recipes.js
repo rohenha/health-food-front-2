@@ -7,10 +7,10 @@ import { queryAPI, updateAPI } from './strapi'
 //   })
 // }
 
-export async function findOneRecipe(id) {
+export async function findOneRecipe(id, token) {
   const response = await queryAPI({
     url: `api/recettes/${id}?populate=*`,
-    headers: { Authorization: `Bearer ${import.meta.env.VITE_STRAPI_TOKEN}` },
+    headers: { Authorization: `Bearer ${token}` },
   })
   return response.data
 }
@@ -47,9 +47,9 @@ export async function updateRecipe(id, data) {
   })
 }
 
-export async function searchRecipes(search, page, user) {
+export async function searchRecipes(search, page, token) {
   let attributes =
-  '&pagination[pageSize]=10&pagination[withCount]=true&sort=title:asc'
+    '&pagination[pageSize]=10&pagination[withCount]=true&sort=title:asc'
 
   if (search.name) {
     attributes += `&filters[title][$contains]=${search.name}`
@@ -62,16 +62,9 @@ export async function searchRecipes(search, page, user) {
   }
   const response = await queryAPI({
     url: `api/recettes?populate=*&pagination[page]=${page}${attributes}`,
-    headers: { Authorization: `Bearer ${user.token}` },
+    headers: { Authorization: `Bearer ${token}` },
   })
   return response
-  // let attributes =
-  //   '&pagination[pageSize]=10&pagination[withCount]=true&sort=title:asc'
-  // if (search.name !== '') {
-  //   attributes += `&filters[title][$contains]=${search.name}`
-  // }
-  // const recipesData = await findRecipes(page, attributes, token)
-  // return recipesData
 }
 
 export async function searchMyRecipes(search, page, user) {

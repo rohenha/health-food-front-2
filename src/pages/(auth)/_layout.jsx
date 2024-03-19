@@ -1,4 +1,5 @@
 import { Outlet, NavLink, Navigate } from 'react-router-dom'
+import { Suspense } from 'react'
 
 import { Toaster } from '@components/ui/toaster'
 import { useUserStore } from '@stores/auth'
@@ -16,7 +17,9 @@ export default function Auth() {
   return (
     <>
       <div className="px-4 pt-16 pb-36 lg:px-10 max-w-screen-xl mx-auto">
-        <Outlet />
+        <Suspense fallback={<div>loading...</div>}>
+          <Outlet />
+        </Suspense>
       </div>
       <Toaster />
       <nav className="fixed w-auto bottom-3 md:bottom-6 left-1/2 transform -translate-x-1/2 border rounded-lg bg-background text-center overflow-hidden">
